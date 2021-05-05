@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{6006608E-6D32-47BE-BD4D-25B6E86FC641}">
+	<Platforms>
+		<Platform Name="Win32"/>
+		<Platform Name="x64"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" OpenMP="OpenMPParallelCode" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug" UseMkl="mklParallel" Interfaces="true"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" OpenMP="OpenMPParallelCode" UseMkl="mklParallel"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Debug|x64">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" OpenMP="OpenMPParallelCode" WarnInterfaces="true" Traceback="true" BoundsCheck="true" RuntimeLibrary="rtMultiThreadedDebug" UseMkl="mklSequential" Interfaces="true"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|x64">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" OpenMP="OpenMPParallelCode" RuntimeLibrary="rtMultiThreadedDLL" UseMkl="mklParallel"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Header Files" Filter="fi;fd"/>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath=".\ACADVIEW_OUTPUT.f90"/>
+		<File RelativePath=".\ANALYZES.f90"/>
+		<File RelativePath=".\BOUNDARY_CRACK.f90"/>
+		<File RelativePath=".\BOUNDARY_PARAMETRICNODES.f90"/>
+		<File RelativePath=".\COHESIVE_BVP.f90"/>
+		<File RelativePath=".\COHESIVE_INFLUENCE_MATRICES.f90"/>
+		<File RelativePath=".\COHESIVE_LAW.f90"/>
+		<File RelativePath=".\COHESIVE_LAW_DERIVATIVE.f90"/>
+		<File RelativePath=".\COHESIVE_STEP_PLOT.f90"/>
+		<File RelativePath=".\COHESIVE_SYSTEM.f90"/>
+		<File RelativePath=".\COHESIVE_TANGENT_OPERATOR.f90"/>
+		<File RelativePath=".\COLLOCATION_OUTPUT.f90"/>
+		<File RelativePath=".\CONVERGENCE.f90"/>
+		<File RelativePath=".\CRACK_OUTPUT.f90"/>
+		<File RelativePath=".\CRACK_PROPAGATION.f90"/>
+		<File RelativePath=".\CRACK_PROPAGATION_HG_UPDATE.f90"/>
+		<File RelativePath=".\DISPLACEMENT_EXTRAPOLATION_TECHNIQUE.f90"/>
+		<File RelativePath=".\DISPLACEMENT_FITTING_TECHNIQUE.f90"/>
+		<File RelativePath=".\DIST_LOADS_SUPPORTS_OUTPUT.f90"/>
+		<File RelativePath=".\EDGE_CRACKS_HG_UPDATE.f90"/>
+		<File RelativePath=".\EDGE_CRACKS_REMESHING.f90"/>
+		<File RelativePath=".\FATIGUE_CRACK_PROPAGATION.f90"/>
+		<File RelativePath=".\FATIGUE_FRACTURE_3D.f90"/>
+		<File RelativePath=".\FIND_ELEMENT_WITH_PNT.f90"/>
+		<File RelativePath=".\FIND_ENRICHED_SUPPS.f90"/>
+		<File RelativePath=".\GAUSS_POINTS.f90"/>
+		<File RelativePath=".\HG_MATRICES.f90"/>
+		<File RelativePath=".\HG_MATRICES_VISCO.f90"/>
+		<File RelativePath=".\HG_ROTATION.f90"/>
+		<File RelativePath=".\INPUT_DATA.f90"/>
+		<File RelativePath=".\INTERCEPTED_EDGES.f90"/>
+		<File RelativePath=".\INTERFACE_OUTPUT.f90"/>
+		<File RelativePath=".\INTERFACE_PRE_PROCESSOR.f90"/>
+		<File RelativePath=".\INTERNAL_DISPLACEMENTS.f90"/>
+		<File RelativePath=".\INTERNAL_POINTS.f90"/>
+		<File RelativePath=".\INTERNAL_POINTS_VISCO.f90"/>
+		<File RelativePath=".\LOCAL_COODINATE_SYSTEM.f90"/>
+		<File RelativePath=".\MAXIMUM_ENERGY_RELEASE_RATE.f90"/>
+		<File RelativePath=".\MAXIMUM_KEQ.f90"/>
+		<File RelativePath=".\MAXIMUM_PRINCIPAL_STRESS.f90"/>
+		<File RelativePath=".\MESH_GENERATION.f90"/>
+		<File RelativePath=".\MINIMUM_DISTANCE_POINT_ELEMENT.f90"/>
+		<File RelativePath=".\MODULES.f90"/>
+		<File RelativePath=".\NEWTON_RAPHSON_ADIMENSIONAL_COORDINATES.f90"/>
+		<File RelativePath=".\NORMAL_OUTWARD.f90"/>
+		<File RelativePath=".\NORMAL_OUTWARD_OUTPUT.f90"/>
+		<File RelativePath=".\PARAMETRICAL_MAPPING.f90"/>
+		<File RelativePath=".\PHYSICAL_MAPPING.f90"/>
+		<File RelativePath=".\PROPAGATION_OUTPUT.f90"/>
+		<File RelativePath=".\QUADRILATERAL_ELEMENT_HP.f90"/>
+		<File RelativePath=".\QUADRILATERAL_ELEMENT_S.f90"/>
+		<File RelativePath=".\REINF_BOND_SLIP.f90"/>
+		<File RelativePath=".\REINF_BOND_SLIP_LAWS.f90"/>
+		<File RelativePath=".\REINF_CONCENTRATED_F.f90"/>
+		<File RelativePath=".\REINF_INTEGRATIONS.f90"/>
+		<File RelativePath=".\REINF_INTEGRATIONS_HP.f90"/>
+		<File RelativePath=".\REINF_MATRIXES.f90"/>
+		<File RelativePath=".\REINF_OUTPUTS.f90"/>
+		<File RelativePath=".\REINF_PLAST_2.f90"/>
+		<File RelativePath=".\REINF_PLASTIC.f90"/>
+		<File RelativePath=".\REINF_PRE_PROCESSOR.f90"/>
+		<File RelativePath=".\REINF_RANDOM_GEN.f90"/>
+		<File RelativePath=".\REINF_STRESS.f90"/>
+		<File RelativePath=".\REINFORCEMENTS.f90"/>
+		<File RelativePath=".\REINFORCEMENTS_FUNCTIONS.f90"/>
+		<File RelativePath=".\REINFORCEMENTS_SOLVER.f90"/>
+		<File RelativePath=".\RESULTING_FORCE_PRESCRIBED_DISPL.f90"/>
+		<File RelativePath=".\SHAPE_FUNCTIONS.f90"/>
+		<File RelativePath=".\SHAPE_FUNCTIONS_1D.f90"/>
+		<File RelativePath=".\SINGULAR_ELEMENT_HP.f90"/>
+		<File RelativePath=".\SINGULAR_ELEMENT_S.f90"/>
+		<File RelativePath=".\SOLVE_BVP.f90"/>
+		<File RelativePath=".\SOLVE_BVP_VISCO.f90"/>
+		<File RelativePath=".\SOLVE_COHESIVE_CRACK_CO.f90"/>
+		<File RelativePath=".\SOLVE_COHESIVE_CRACK_TO.f90"/>
+		<File RelativePath=".\SOLVE_ELASTIC_CRACK_PROBLEM.f90"/>
+		<File RelativePath=".\TRIANGULAR_ELEMENT_HP.f90"/>
+		<File RelativePath=".\TRIANGULAR_ELEMENT_S.f90"/>
+		<File RelativePath=".\VERTICAL_INCREMENTS.f90"/>
+		<File RelativePath=".\VISCO_FIND_PNT.f90"/>
+		<File RelativePath=".\VISCO_OUTPUT.f90"/>
+		<File RelativePath=".\WILLIAMS_DISPL_FUNCTIONS.f90"/>
+		<File RelativePath=".\WILLIAMS_DISPL_FUNCTIONS_DERIV.f90"/>
+		<File RelativePath=".\WRITE_TRIMMEDINNERFILE.f90"/>
+		<File RelativePath=".\WRITE_TRIMMEDOUTERFILE.f90"/>
+		<File RelativePath=".\XBEM_CRACK_TIP.f90"/>
+		<File RelativePath=".\XBEM_DIST_FORCE.f90"/>
+		<File RelativePath=".\XBEM_FORCE.f90"/>
+		<File RelativePath=".\XBEM_K_AUXILIAR_ELEMS.f90"/>
+		<File RelativePath=".\XBEM_K_QUADRILATERAL_HP.f90"/>
+		<File RelativePath=".\XBEM_K_QUADRILATERAL_S.f90"/>
+		<File RelativePath=".\XBEM_K_SINGULAR_HP.f90"/>
+		<File RelativePath=".\XBEM_K_SINGULAR_S.f90"/>
+		<File RelativePath=".\XBEM_SUPPORT.f90"/></Filter></Files>
+	<Globals/></VisualStudioProject>
