@@ -12,6 +12,8 @@
 !
     LOGICAL::CHANGE_A
 !
+    CHARACTER*30::FILE
+        
     INTEGER::I,J,K,II,KK,NEN,CONT,IT,INTERFACE_NODE,INTERFACE_NODE1,INTERFACE_NODE2,ELEM,LOCAL_NODE,POS,DIM_A,&
     NI_BACKUP[ALLOCATABLE](:,:),NI_DISC[ALLOCATABLE](:,:),NI_PRV[ALLOCATABLE](:,:),DISCONNECTED_PAIR,&
     INFO,N_INTERFACE_POINTS_BACKUP,CONT_NONCHS_NODE
@@ -98,6 +100,10 @@
     ENDDO
 !   COHESIVE INCREMENTAL ANALYSIS
     DO KK=1,N_COHESIVE_INCREMENTS
+        
+        WRITE(FILE,'(i0)')KK
+        OPEN(77,file='Output_data\Cohesive\Increment'//TRIM(FILE)//'.txt',status='unknown')
+        
 !       ACUMULATING ELASTIC PREDICTION TO FINAL ANSWER
         U_TOTAL=U_TOTAL+U_EL
         T_TOTAL=T_TOTAL+T_EL
@@ -116,6 +122,11 @@
         !    ENDIF            
         !ENDIF
         DO WHILE ((DABS(DIF_F_EXC).GT.TOL_F_EXC))
+            
+            WRITE(77,'(A,X,I0,X,A)')'---------------- ITERATION:',IT,'-----------------------'
+            WRITE(77,*)''
+            WRITE(77,'(A)')'INTERF_PNT  SIDE   X    Y    Z    CHS_T_AXIAL  CHS_U_AXIAL    CMOD'
+            
             CHS_U=0.D0
             CHS_T=0.D0
             T_REAL=0.D0
@@ -167,6 +178,17 @@
                                 CONT_NONCHS_NODE=CONT_NONCHS_NODE+1
                             ENDIF
                         ENDIF
+                        
+                        IF (II.EQ.1) THEN
+                            WRITE(77,'(I0,X,I0,X,3(F10.4,X),3(X,X,E10.4,X,X))')I,II,COORD_COLLOCPOINTS(INTERFACE_NODE,1),&
+                            COORD_COLLOCPOINTS(INTERFACE_NODE,2),COORD_COLLOCPOINTS(INTERFACE_NODE,3),&
+                            CHS_T(3*INTERFACE_NODE-2),U_TOTAL(3*INTERFACE_NODE-2),U_TOTAL(3*NI(I,2)-2)-U_TOTAL(3*NI(I,1)-2)
+                        ELSE
+                            WRITE(77,'(I0,X,I0,X,3(F10.4,X),2(X,X,E10.4,X,X))')I,II,COORD_COLLOCPOINTS(INTERFACE_NODE,1),&
+                            COORD_COLLOCPOINTS(INTERFACE_NODE,2),COORD_COLLOCPOINTS(INTERFACE_NODE,3),&
+                            CHS_T(3*INTERFACE_NODE-2),U_TOTAL(3*INTERFACE_NODE-2)
+                        ENDIF
+                        
                     ENDDO
                 ELSE
                     CONT_NONCHS_NODE=CONT_NONCHS_NODE+1
@@ -187,7 +209,7 @@
             NI_PRV=NI_DISC
             !NI_DISC=NI_BACKUP            
 !
-            ! NONLINEAR PROBLEM: APPLYING EXCEDENT FORCE IN SEPARATED PROBLEM
+            !   NONLINEAR PROBLEM: APPLYING EXCEDENT FORCE IN SEPARATED PROBLEM
             IF((DABS(DIF_F_EXC).GT.TOL_F_EXC))THEN
                 IF(ALLOCATED(CHS_INT)) DEALLOCATE(CHS_INT)
                 ALLOCATE(CHS_INT(N_INTERFACE_POINTS-CONT_NONCHS_NODE,2))
@@ -286,8 +308,12 @@
         !--------------------------------------------------
         ! EXEMPLO 1
         IF(TRIM(INPUT_FILE).EQ.'E2.TXT'.OR.TRIM(INPUT_FILE).EQ.'e2.txt')THEN
-            RES_GRAPH(KK,1)=U_TOTAL(223)
-            RES_GRAPH(KK,2)=-T_TOTAL(313)
+            !RES_GRAPH(KK,1)=U_TOTAL(223)
+            !RES_GRAPH(KK,2)=-T_TOTAL(313)
+            RES_GRAPH(KK,1)=U_TOTAL(262)
+            RES_GRAPH(KK,2)=-T_TOTAL(319)
+            !RES_GRAPH(KK,1)=U_TOTAL(97)
+            !RES_GRAPH(KK,2)=-T_TOTAL(142)
             !CALL RESULTING_FORCE_PRESCRIBED_DISPL(1,CMOD_AB,'U')
             !--------------------------------------------------
             ! EXEMPLO 1 XBEM
@@ -348,7 +374,7 @@
         WRITE(9,100)RES_GRAPH(KK,1),RES_GRAPH(KK,2),IT
         !WRITE(10,100)RES_GRAPH(KK,1),RES_GRAPH(KK,3),IT
         !!--------------------------------------------------
-
+        CLOSE(77)
     ENDDO
 !
     CLOSE(9)
@@ -356,9 +382,15 @@
 !
 100	FORMAT(16x,ES16.6,16x,ES16.6,8x,i4)
 !    
-    END SUBROUTINE SOLVE_COHESIVE_CRACK_CO
+END SUBROUTINE SOLVE_COHESIVE_CRACK_CO
     
-    SUBROUTINE CMOD_EX4(CMOD_AB)
+! ******************************************************************************************************
+! ******************************************************************************************************
+! ******************************************************************************************************
+! ******************************************************************************************************
+! ******************************************************************************************************
+    
+SUBROUTINE CMOD_EX4(CMOD_AB)
 !   
     USE ISOPARAMETRIC_MESH
     USE ANALYSIS

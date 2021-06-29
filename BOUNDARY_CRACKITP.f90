@@ -1,0 +1,250 @@
+	SUBROUTINE INTERCEPTED_EDGES(ELEM,EDGE,INTERCEPTED_EDGE)
+!
+	USE ISOPARAMETRIC_MESH
+	USE MATERIALS
+	USE CRACKS_DUAL_BEM
+	USE SUB_REGIONS_INTERFACES
+	USE ANALYSIS
+	USE REMESHING
+!
+	IMPLICIT NONE 
+!
+	INTEGER::I,J,K,ELEM,EDGE,IPIV(2),INFO
+!
+    REAL*8::D1,D2,PI1(3),PI2(3),PF1(3),PF2(3),V1(3),V2(3),MAT(2,2),F(2),DET,A(2),X1(3),X2(3),R		
+!    
+    LOGICAL::INTERCEPTED_EDGE	
+!
+    INTERCEPTED_EDGE=.FALSE.
+    SELECT CASE(ELEM_TYPE(ELEM))
+    CASE(3)  
+        SELECT CASE(EDGE)
+        CASE(1)
+            PI1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),1)
+            PI1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),2)
+            PI1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),3)
+! 
+            PF1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),1)
+            PF1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),2)
+            PF1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),3)                       
+        CASE(2)
+            PI1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),1)
+            PI1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),2)
+            PI1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),3)
+! 
+            PF1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),1)
+            PF1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),2)
+            PF1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),3)    
+        CASE(3)
+            PI1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),1)
+            PI1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),2)
+            PI1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),3)
+! 
+            PF1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),1)
+            PF1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),2)
+            PF1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),3)       
+        ENDSELECT    
+    CASE(4)  
+        SELECT CASE(EDGE)
+        CASE(1)
+            PI1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),1)
+            PI1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),2)
+            PI1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),3)
+! 
+            PF1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),1)
+            PF1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),2)
+            PF1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),3)                       
+        CASE(2)
+            PI1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),1)
+            PI1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),2)
+            PI1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,2),3)
+! 
+            PF1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),1)
+            PF1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),2)
+            PF1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),3)    
+        CASE(3)
+            PI1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),1)
+            PI1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),2)
+            PI1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,3),3)
+! 
+            PF1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,4),1)
+            PF1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,4),2)
+            PF1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,4),3)    
+        CASE(4)
+            PI1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,4),1)
+            PI1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,4),2)
+            PI1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,4),3)
+! 
+            PF1(1)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),1)
+            PF1(2)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),2)
+            PF1(3)=COORD_NODES(NODES_CONNECTIVITY(ELEM,1),3)   
+        ENDSELECT
+    ENDSELECT     
+    D1=DSQRT((PF1(1)-PI1(1))**2+(PF1(2)-PI1(2))**2+(PF1(3)-PI1(3))**2)
+    V1=(PF1-PI1)/D1
+    
+    DO J=1,N_ELEM
+        IF(DUAL_BEM(COLLOCPOINTS_CONNECTIVITY(J,1)).EQ."S")THEN
+            DO K=1,ELEM_TYPE(J)
+                SELECT CASE(ELEM_TYPE(J))
+                CASE(3)
+                    SELECT CASE(K)
+                    CASE(1)
+                        PI2(1)=COORD_NODES(NODES_CONNECTIVITY(J,1),1)
+                        PI2(2)=COORD_NODES(NODES_CONNECTIVITY(J,1),2)
+                        PI2(3)=COORD_NODES(NODES_CONNECTIVITY(J,1),3)
+! 
+                        PF2(1)=COORD_NODES(NODES_CONNECTIVITY(J,2),1)
+                        PF2(2)=COORD_NODES(NODES_CONNECTIVITY(J,2),2)
+                        PF2(3)=COORD_NODES(NODES_CONNECTIVITY(J,2),3)                 
+                    CASE(2)
+                        PI2(1)=COORD_NODES(NODES_CONNECTIVITY(J,2),1)
+                        PI2(2)=COORD_NODES(NODES_CONNECTIVITY(J,2),2)
+                        PI2(3)=COORD_NODES(NODES_CONNECTIVITY(J,2),3)
+!  
+                        PF2(1)=COORD_NODES(NODES_CONNECTIVITY(J,3),1)
+                        PF2(2)=COORD_NODES(NODES_CONNECTIVITY(J,3),2)
+                        PF2(3)=COORD_NODES(NODES_CONNECTIVITY(J,3),3)                 
+                    CASE(3)
+                        PI2(1)=COORD_NODES(NODES_CONNECTIVITY(J,3),1)
+                        PI2(2)=COORD_NODES(NODES_CONNECTIVITY(J,3),2)
+                        PI2(3)=COORD_NODES(NODES_CONNECTIVITY(J,3),3)
+! 
+                        PF2(1)=COORD_NODES(NODES_CONNECTIVITY(J,1),1)
+                        PF2(2)=COORD_NODES(NODES_CONNECTIVITY(J,1),2)
+                        PF2(3)=COORD_NODES(NODES_CONNECTIVITY(J,1),3)                                 
+                    ENDSELECT                
+                CASE(4)
+                    SELECT CASE(K)
+                    CASE(1)
+                        PI2(1)=COORD_NODES(NODES_CONNECTIVITY(J,1),1)
+                        PI2(2)=COORD_NODES(NODES_CONNECTIVITY(J,1),2)
+                        PI2(3)=COORD_NODES(NODES_CONNECTIVITY(J,1),3)
+! 
+                        PF2(1)=COORD_NODES(NODES_CONNECTIVITY(J,2),1)
+                        PF2(2)=COORD_NODES(NODES_CONNECTIVITY(J,2),2)
+                        PF2(3)=COORD_NODES(NODES_CONNECTIVITY(J,2),3)                 
+                    CASE(2)
+                       PI2(1)=COORD_NODES(NODES_CONNECTIVITY(J,2),1)
+                       PI2(2)=COORD_NODES(NODES_CONNECTIVITY(J,2),2)
+                       PI2(3)=COORD_NODES(NODES_CONNECTIVITY(J,2),3)
+! 
+                        PF2(1)=COORD_NODES(NODES_CONNECTIVITY(J,3),1)
+                        PF2(2)=COORD_NODES(NODES_CONNECTIVITY(J,3),2)
+                        PF2(3)=COORD_NODES(NODES_CONNECTIVITY(J,3),3)                 
+                    CASE(3)
+                        PI2(1)=COORD_NODES(NODES_CONNECTIVITY(J,3),1)
+                        PI2(2)=COORD_NODES(NODES_CONNECTIVITY(J,3),2)
+                        PI2(3)=COORD_NODES(NODES_CONNECTIVITY(J,3),3)
+! 
+                        PF2(1)=COORD_NODES(NODES_CONNECTIVITY(J,4),1)
+                        PF2(2)=COORD_NODES(NODES_CONNECTIVITY(J,4),2)
+                        PF2(3)=COORD_NODES(NODES_CONNECTIVITY(J,4),3)                 
+                    CASE(4)
+                        PI2(1)=COORD_NODES(NODES_CONNECTIVITY(J,4),1)
+                        PI2(2)=COORD_NODES(NODES_CONNECTIVITY(J,4),2)
+                        PI2(3)=COORD_NODES(NODES_CONNECTIVITY(J,4),3)
+! 
+                        PF2(1)=COORD_NODES(NODES_CONNECTIVITY(J,1),1)
+                        PF2(2)=COORD_NODES(NODES_CONNECTIVITY(J,1),2)
+                        PF2(3)=COORD_NODES(NODES_CONNECTIVITY(J,1),3)                 
+                    ENDSELECT
+                ENDSELECT
+                D2=DSQRT((PF2(1)-PI2(1))**2+(PF2(2)-PI2(2))**2+(PF2(3)-PI2(3))**2)
+                V2=(PF2-PI2)/D2
+!                
+                DET=V2(1)*(V1(2)+V1(3))-V1(1)*(V2(2)+V2(3))
+                IF(DET.NE.0.D0)THEN
+                    MAT(1,1)=V1(1)
+                    MAT(1,2)=-V2(1)
+                    MAT(2,1)=V1(2)+V1(3)     
+                    MAT(2,2)=-V2(2)-V2(3) 
+                    F(1)=PI2(1)-PI1(1)           
+                    F(2)=PI2(2)+PI2(3)-PI1(2)-PI1(3)
+                    CALL DGESV(2,1,MAT,2,IPIV,F,2,INFO)
+                    A=F
+                    IF(0.D0.LE.A(1).AND.A(1).LE.D1)THEN
+                        IF(0.D0.LE.A(2).AND.A(2).LE.D2)THEN
+                            X1=PI1+A(1)*V1
+                            X2=PI2+A(2)*V2
+                            R=DSQRT((X2(1)-X1(1))**2+(X2(2)-X1(2))**2+(X2(3)-X1(3))**2)
+                            IF(R.LE.TOL)THEN
+                                COORD_INTERCEPTPOINTS(ELEM,EDGE,:)=X1
+                                INTERCEPTED_EDGE=.TRUE.
+                                IF(CRACKED_ELEM(ELEM).EQ."UNCRACKED")THEN
+                                    BOUNDARYCRACK_ELEMENTS(ELEM,1)=J
+                                    BOUNDARYCRACK_EDGES(ELEM,1)=K
+                                ELSE
+                                    BOUNDARYCRACK_ELEMENTS(ELEM,2)=J
+                                    BOUNDARYCRACK_EDGES(ELEM,2)=K
+                                ENDIF                                 
+                            ENDIF
+                        ENDIF
+                    ENDIF
+                ENDIF
+! 
+                DET=V1(2)*(V2(1)+V2(3))-V2(2)*(V1(1)+V1(3))
+                IF(DET.NE.0.D0)THEN
+                    MAT(1,1)=V1(1)+v1(3)
+                    MAT(1,2)=-V2(1)-V2(3)
+                    MAT(2,1)=V1(2)     
+                    MAT(2,2)=-V2(2) 
+                    F(1)=PI2(1)+PI2(3)-PI1(1)-PI1(3)           
+                    F(2)=PI2(2)-PI1(2)
+                    CALL DGESV(2,1,MAT,2,IPIV,F,2,INFO)
+                    A=F
+                    IF(0.D0.LE.A(1).AND.A(1).LE.D1)THEN
+                        IF(0.D0.LE.A(2).AND.A(2).LE.D2)THEN
+                            X1=PI1+A(1)*V1
+                            X2=PI2+A(2)*V2
+                            R=DSQRT((X2(1)-X1(1))**2+(X2(2)-X1(2))**2+(X2(3)-X1(3))**2)
+                            IF(R.LE.TOL)THEN
+                                COORD_INTERCEPTPOINTS(ELEM,EDGE,:)=X1
+                                INTERCEPTED_EDGE=.TRUE.
+                                IF(CRACKED_ELEM(ELEM).EQ."UNCRACKED")THEN
+                                    BOUNDARYCRACK_ELEMENTS(ELEM,1)=J
+                                    BOUNDARYCRACK_EDGES(ELEM,1)=K
+                                ELSE
+                                    BOUNDARYCRACK_ELEMENTS(ELEM,2)=J
+                                    BOUNDARYCRACK_EDGES(ELEM,2)=K
+                                ENDIF                                                              
+                            ENDIF
+                        ENDIF
+                    ENDIF
+                ENDIF
+ ! 
+                DET=V1(3)*(V2(1)+V2(2))-V2(3)*(V1(1)+V1(2))
+                IF(DET.NE.0.D0)THEN
+                    MAT(1,1)=V1(1)+v1(2)
+                    MAT(1,2)=-V2(1)-V2(2)
+                    MAT(2,1)=V1(3)     
+                    MAT(2,2)=-V2(3) 
+                    F(1)=PI2(1)+PI2(2)-PI1(1)-PI1(2)           
+                    F(2)=PI2(3)-PI1(3)
+                    CALL DGESV(2,1,MAT,2,IPIV,F,2,INFO)
+                    A=F
+                    IF(0.D0.LE.A(1).AND.A(1).LE.D1)THEN
+                        IF(0.D0.LE.A(2).AND.A(2).LE.D2)THEN
+                            X1=PI1+A(1)*V1
+                            X2=PI2+A(2)*V2
+                            R=DSQRT((X2(1)-X1(1))**2+(X2(2)-X1(2))**2+(X2(3)-X1(3))**2)
+                            IF(R.LE.TOL)THEN
+                                COORD_INTERCEPTPOINTS(ELEM,EDGE,:)=X1
+                                INTERCEPTED_EDGE=.TRUE.
+                                IF(CRACKED_ELEM(ELEM).EQ."UNCRACKED")THEN
+                                    BOUNDARYCRACK_ELEMENTS(ELEM,1)=J
+                                    BOUNDARYCRACK_EDGES(ELEM,1)=K
+                                ELSE
+                                    BOUNDARYCRACK_ELEMENTS(ELEM,2)=J
+                                    BOUNDARYCRACK_EDGES(ELEM,2)=K
+                                ENDIF                                 
+                            ENDIF
+                        ENDIF
+                    ENDIF
+                ENDIF
+!                                              
+            ENDDO    
+        ENDIF
+    ENDDO
+! 	   
+    END SUBROUTINE INTERCEPTED_EDGES
